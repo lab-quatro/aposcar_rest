@@ -6,9 +6,11 @@ import uuid
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=14)
     date_joined = models.DateField(auto_now_add=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/')
+
+    def __str__(self):
+        return f"{self.user.username}'s profile"
 
 
 class Nominee(models.Model):
@@ -18,12 +20,18 @@ class Nominee(models.Model):
     class Meta:
         verbose_name_plural = 'nominees'
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=40)
 
     class Meta:
         verbose_name_plural = 'categories'
+
+    def __str__(self):
+        return self.name
 
 
 class Indication(models.Model):
@@ -32,6 +40,9 @@ class Indication(models.Model):
     year = models.DateField()
     is_winner = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'"{self.nominated.name}" on "{self.category.name}"'
+
 
 class Bet(models.Model):
     indication = models.ForeignKey(Indication, on_delete=models.CASCADE)
@@ -39,7 +50,7 @@ class Bet(models.Model):
 
 
 class Room(models.Model):
-    share_code = models.CharField(unique=True, max_length=6)
+    share_code = models.CharField(unique=True, max_length=6, blank=True)
     name = models.CharField(max_length=14)
     profile_owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
@@ -51,6 +62,9 @@ class Room(models.Model):
             share_code = uuid.uuid4().hex[:6].upper()
         self.systemCode = share_code
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class JoinedRoom(models.Model):
