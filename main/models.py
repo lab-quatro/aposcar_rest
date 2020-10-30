@@ -10,7 +10,7 @@ class Profile(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pictures/')
 
     def __str__(self):
-        return f"{self.user.first_name}'s profile"
+        return f"{self.user.username}'s profile"
 
 
 class Nominee(models.Model):
