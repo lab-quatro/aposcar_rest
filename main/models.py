@@ -9,6 +9,17 @@ class Profile(models.Model):
     date_joined = models.DateField(auto_now_add=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/')
 
+    @property
+    def score(self):
+        score = 0
+        profile_bets = Bet.objects.filter(profile=self)
+
+        for bet in profile_bets:
+            if bet.indication.is_winner:
+                score += 1
+
+        return score
+
     def __str__(self):
         return f"{self.user.username}'s profile"
 
@@ -37,7 +48,7 @@ class Category(models.Model):
 class Indication(models.Model):
     nominated = models.ForeignKey(Nominee, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    year = models.DateField()
+    year = models.IntegerField()
     is_winner = models.BooleanField(default=False)
 
     def __str__(self):
@@ -60,7 +71,7 @@ class Room(models.Model):
             share_code = uuid.uuid4().hex[:6].upper()
         while Room.objects.filter(share_code=share_code).exclude(pk=self.pk).exists():
             share_code = uuid.uuid4().hex[:6].upper()
-        self.systemCode = share_code
+        self.share_code = share_code
         super().save(*args, **kwargs)
 
     def __str__(self):
