@@ -1,32 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 import uuid
 
 
-class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date_joined = models.DateField(auto_now_add=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/')
-
-    @property
-    def score(self):
-        score = 0
-        profile_bets = Bet.objects.filter(profile=self)
-
-        for bet in profile_bets:
-            if bet.indication.is_winner:
-                score += 1
-
-        return score
-
-    def __str__(self):
-        return f"{self.user.username}'s profile"
-
-
 class Nominee(models.Model):
     name = models.TextField()
-    picture = models.ImageField()
+    picture = models.ImageField(upload_to='nominees/')
 
     class Meta:
         verbose_name_plural = 'nominees'
@@ -55,15 +35,32 @@ class Indication(models.Model):
         return f'"{self.nominated.name}" on "{self.category.name}"'
 
 
-class Bet(models.Model):
-    indication = models.ForeignKey(Indication, on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+class UserProfile(AbstractUser):
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True)
+    bets = models.ManyToManyField(Indication)
+    score = models.IntegerField(default=0)
+
+    def update_score(self):
+        score = 0
+
+        for bet in self.bets.all():
+            if bet.is_winner:
+                score += 1
+
+        return score
+
+    def save(self, *args, **kwargs):
+        self.score = self.update_score()
+        super().save(self, *args, **kwargs)
+
+    def __str__(self):
+        return f"{self.username}'s profile"
 
 
 class Room(models.Model):
     share_code = models.CharField(unique=True, max_length=6, blank=True)
     name = models.CharField(max_length=14)
-    profile_owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         share_code = self.share_code
@@ -79,5 +76,5 @@ class Room(models.Model):
 
 
 class JoinedRoom(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
