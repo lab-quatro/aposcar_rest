@@ -1,6 +1,6 @@
 from django.contrib import admin
-from main.models import Room, Profile, Nominee, Indication, Category
+from main.models import Room, Nominee, Indication, Category, UserProfile
 
 # Register your models here.
 
-admin.site.register([Room, Profile, Nominee, Indication, Category])
+admin.site.register([Room, Nominee, Indication, Category, UserProfile])
