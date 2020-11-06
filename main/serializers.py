@@ -21,8 +21,29 @@ class IndicationSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    bets = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Indication.objects.all())
+    bets = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Indication.objects.all(), required=False)
+    score = serializers.SerializerMethodField()
 
     class Meta:
         model = models.UserProfile
-        fields = ['url', 'id', 'username', 'email', 'date_joined', 'profile_picture', 'score', 'bets']
+        fields = ['url', 'id', 'username', 'email', 'date_joined', 'profile_picture', 'bets', 'score']
+
+    def get_score(self, obj):
+        return obj.bets.filter(is_winner=True).count()
+
+    def validate_bets(self, value):
+        categories = [indication.category for indication in value]
+
+        # Convert to set to remove the duplicates,
+        # and check if the list len is still the same
+        if len(categories) != len(set(categories)):
+            raise serializers.ValidationError("You can't place two bets to the same category!")
+        return value
+
+
+class RoomSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.HyperlinkedRelatedField(read_only=True, view_name='userprofile-detail')
+
+    class Meta:
+        model = models.Room
+        fields = ['url', 'id', 'name', 'owner', 'users', 'share_code']
