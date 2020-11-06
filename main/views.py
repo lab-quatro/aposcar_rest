@@ -1,7 +1,8 @@
 from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from main.permissions import IsOwnerOrInRoom
+from main.permissions import \
+    IsOwnerOrInRoom, IsProfileOwnerOrReadOnlyOrStaff, IsStaffOrReadOnly
 
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -12,7 +13,7 @@ from main import serializers
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsProfileOwnerOrReadOnlyOrStaff]
 
     def get_queryset(self):
         queryset = models.UserProfile.objects.all()
@@ -32,19 +33,19 @@ class UserViewSet(viewsets.ModelViewSet):
 class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
     serializer_class = serializers.IndicationSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsStaffOrReadOnly]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsStaffOrReadOnly]
 
 
 class NomineeViewSet(viewsets.ModelViewSet):
     queryset = models.Nominee.objects.all()
     serializer_class = serializers.NomineeSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsStaffOrReadOnly]
 
 
 class RoomViewSet(viewsets.ModelViewSet):
