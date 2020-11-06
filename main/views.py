@@ -1,7 +1,7 @@
 from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from django.db.models import F
+from main.permissions import IsOwnerOrInRoom
 
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -12,6 +12,7 @@ from main import serializers
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         queryset = models.UserProfile.objects.all()
@@ -31,25 +32,32 @@ class UserViewSet(viewsets.ModelViewSet):
 class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
     serializer_class = serializers.IndicationSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class NomineeViewSet(viewsets.ModelViewSet):
     queryset = models.Nominee.objects.all()
     serializer_class = serializers.NomineeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = models.Room.objects.all()
     serializer_class = serializers.RoomSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrInRoom]
 
     def get_queryset(self):
-        return models.Room.objects.filter(owner=self.request.user)
+        queryset = models.Room.objects.all()
+
+        # The user can see all rooms that he owns or belongs to.
+        return queryset.filter(users__in=[self.request.user]) | \
+               queryset.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -70,9 +78,10 @@ class RoomViewSet(viewsets.ModelViewSet):
             room.users.remove(user.id)
         return Response({'status': 'users removed'})
 
-    @action(detail=True)
+    @action(detail=True, methods=['PATCH'])
     def renew_code(self, request, pk=None):
         room = self.get_object()
+        self.check_object_permissions(self.request, room)
         room.share_code = None
         room.save()
         return Response({'share_code': room.share_code})
