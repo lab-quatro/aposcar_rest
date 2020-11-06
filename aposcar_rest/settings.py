@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'rest_framework',
     'django_filters',
-    'drf_yasg'
+    'drf_yasg',
+    'django_rest_passwordreset'
 ]
 
 MIDDLEWARE = [
