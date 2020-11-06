@@ -38,20 +38,6 @@ class Indication(models.Model):
 class UserProfile(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True)
     bets = models.ManyToManyField(Indication)
-    score = models.IntegerField(default=0)
-
-    def update_score(self):
-        score = 0
-
-        for bet in self.bets.all():
-            if bet.is_winner:
-                score += 1
-
-        return score
-
-    def save(self, *args, **kwargs):
-        self.score = self.update_score()
-        super().save(self, *args, **kwargs)
 
     def __str__(self):
         return f"{self.username}'s profile"
@@ -60,7 +46,8 @@ class UserProfile(AbstractUser):
 class Room(models.Model):
     share_code = models.CharField(unique=True, max_length=6, blank=True)
     name = models.CharField(max_length=14)
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(UserProfile, related_name='owner', on_delete=models.CASCADE)
+    users = models.ManyToManyField(UserProfile, related_name='users', blank=True)
 
     def save(self, *args, **kwargs):
         share_code = self.share_code
@@ -73,8 +60,3 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class JoinedRoom(models.Model):
-    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
