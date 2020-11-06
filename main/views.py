@@ -1,14 +1,31 @@
+from django.db.models import Count
 from rest_framework import viewsets
-from main import serializers
+from rest_framework.decorators import action
+from django.db.models import F
+
+from rest_framework import permissions
+from rest_framework.response import Response
+
 from main import models
-from rest_framework import filters
+from main import serializers
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = models.UserProfile.objects.all()
     serializer_class = serializers.UserSerializer
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['username', 'email', 'score']
+
+    def get_queryset(self):
+        queryset = models.UserProfile.objects.all()
+
+        ordering_query_sets = {
+            'score': models.UserProfile.objects
+                .annotate(score=Count('bets__is_winner')).order_by('-score'),
+            '-score': models.UserProfile.objects
+                .annotate(score=Count('bets__is_winner')).order_by('score'),
+        }
+
+        if ordering := self.request.query_params.get('ordering'):
+            return ordering_query_sets[ordering]
+        return queryset
 
 
 class IndicationViewSet(viewsets.ModelViewSet):
@@ -24,3 +41,38 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class NomineeViewSet(viewsets.ModelViewSet):
     queryset = models.Nominee.objects.all()
     serializer_class = serializers.NomineeSerializer
+
+
+class RoomViewSet(viewsets.ModelViewSet):
+    queryset = models.Room.objects.all()
+    serializer_class = serializers.RoomSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return models.Room.objects.filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    @action(detail=True, methods=['POST'])
+    def add_user(self, request, pk=None):
+        room = self.get_object()
+        users = models.UserProfile.objects.filter(pk__in=request.data['users'])
+        for user in users:
+            room.users.add(user.id)
+        return Response({'status': 'new users added'})
+
+    @action(detail=True, methods=['POST'])
+    def remove_user(self, request, pk=None):
+        room = self.get_object()
+        users = models.UserProfile.objects.filter(pk__in=request.data['users'])
+        for user in users:
+            room.users.remove(user.id)
+        return Response({'status': 'users removed'})
+
+    @action(detail=True)
+    def renew_code(self, request, pk=None):
+        room = self.get_object()
+        room.share_code = None
+        room.save()
+        return Response({'share_code': room.share_code})
