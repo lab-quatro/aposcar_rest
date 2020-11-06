@@ -40,7 +40,7 @@ class UserProfile(AbstractUser):
     bets = models.ManyToManyField(Indication)
 
     def __str__(self):
-        return f"{self.username}'s profile"
+        return self.username
 
 
 class Room(models.Model):
