@@ -36,7 +36,8 @@ class Indication(models.Model):
 
 
 class UserProfile(AbstractUser):
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/',
+                                        blank=True)
     bets = models.ManyToManyField(Indication)
 
     def __str__(self):
@@ -46,8 +47,10 @@ class UserProfile(AbstractUser):
 class Room(models.Model):
     share_code = models.CharField(unique=True, max_length=6, blank=True)
     name = models.CharField(max_length=14)
-    owner = models.ForeignKey(UserProfile, related_name='owner', on_delete=models.CASCADE)
-    users = models.ManyToManyField(UserProfile, related_name='users', blank=True)
+    owner = models.ForeignKey(UserProfile, related_name='owner',
+                              on_delete=models.CASCADE)
+    users = models.ManyToManyField(UserProfile, related_name='users',
+                                   blank=True)
 
     def save(self, *args, **kwargs):
         share_code = self.share_code
