@@ -1,4 +1,9 @@
+from django.core.mail import EmailMultiAlternatives
 from django.db.models import Count
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from main.permissions import \
@@ -9,6 +14,33 @@ from rest_framework.response import Response
 
 from main import models
 from main import serializers
+
+
+class CustomPasswordResetView:
+    @staticmethod
+    @receiver(reset_password_token_created)
+    def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+        context = {
+            'current_user': reset_password_token.user,
+            'username': reset_password_token.user.username,
+            'email': reset_password_token.user.email,
+            'reset_password_url': "{}?token={}".format(
+                instance.request.build_absolute_uri(reverse('password_reset:reset-password-confirm')),
+                reset_password_token.key)
+        }
+
+        email_html_message = render_to_string('email/user_reset_password.html', context)
+        email_plaintext_message = render_to_string('email/user_reset_password.txt', context)
+
+        msg = EmailMultiAlternatives(
+            subject="Password Reset for Aposcar",
+            body=email_plaintext_message,
+            from_email='no-replay@labqu4tro.com',
+            to=[reset_password_token.user.email]
+        )
+        msg.attach_alternative(email_html_message, "text/html")
+        msg.send()
+        print('message sent')
 
 
 class UserViewSet(viewsets.ModelViewSet):
