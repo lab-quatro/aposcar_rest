@@ -37,8 +37,11 @@ class Indication(models.Model):
 
 class UserProfile(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pictures/',
-                                        blank=True)
-    bets = models.ManyToManyField(Indication)
+                                        blank=True, help_text='User profile picture')
+    bets = models.ManyToManyField(
+        Indication,
+        help_text="A list of Indication IDs. You can't place two bets to the same category."
+    )
 
     def __str__(self):
         return self.username
