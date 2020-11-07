@@ -1,0 +1,170 @@
+[
+  {
+    "model": "main.category",
+    "pk": 1,
+    "fields": {
+      "name": "Best Picture"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 2,
+    "fields": {
+      "name": "Best Director"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 3,
+    "fields": {
+      "name": "Best Actor"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 4,
+    "fields": {
+      "name": "Best Actress"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 5,
+    "fields": {
+      "name": "Best Supporting Actor"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 6,
+    "fields": {
+      "name": "Best Supporting Actress"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 7,
+    "fields": {
+      "name": "Best Original Screenplay"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 8,
+    "fields": {
+      "name": "Best Adapted Screenplay"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 9,
+    "fields": {
+      "name": "Best Animated Feature Film"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 10,
+    "fields": {
+      "name": "Best International Feature Film"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 11,
+    "fields": {
+      "name": "Best Documentary Feature"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 12,
+    "fields": {
+      "name": "Best Documentary Short Subject"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 13,
+    "fields": {
+      "name": "Best Live Action Short Film"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 14,
+    "fields": {
+      "name": "Best Animated Short Film"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 15,
+    "fields": {
+      "name": "Best Original Score"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 16,
+    "fields": {
+      "name": "Best Original Song"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 17,
+    "fields": {
+      "name": "Best Sound Editing"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 18,
+    "fields": {
+      "name": "Best Sound Mixing"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 19,
+    "fields": {
+      "name": "Best Production Design"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 20,
+    "fields": {
+      "name": "Best Cinematography"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 21,
+    "fields": {
+      "name": "Best Makeup and Hairstyling"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 22,
+    "fields": {
+      "name": "Best Costume Design"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 23,
+    "fields": {
+      "name": "Best Film Editing"
+    }
+  },
+  {
+    "model": "main.category",
+    "pk": 24,
+    "fields": {
+      "name": "Best Visual Effects"
+    }
+  }
+]
