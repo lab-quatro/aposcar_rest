@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+import django_heroku
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -40,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
+    'rest_framework',
+    'django_filters',
+    'drf_yasg',
+    'django_rest_passwordreset'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +62,7 @@ ROOT_URLCONF = 'aposcar_rest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'template')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -76,11 +81,22 @@ WSGI_APPLICATION = 'aposcar_rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# POSTGRES_DATABASE = {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': os.getenv('DATABASE_NAME'),
+#     'USER': os.getenv('DATABASE_USER'),
+#     'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+#     'HOST': os.getenv('DATABASE_HOST'),
+#     'PORT': os.getenv('DATABASE_PORT')
+# }
+
+SQL_LITE_DATABASE = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': BASE_DIR / 'db.sqlite3',
+}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': SQL_LITE_DATABASE
 }
 
 # Password validation
@@ -117,4 +133,36 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+AUTH_USER_MODEL = 'main.UserProfile'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'no-replay@labqu4tro.com'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+# Azure Storage Settings
+AZURE_CONNECTION_STRING = str(os.getenv('AZURE_CONNECTION_STRING'))
+AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
+
+# Activate Django-Heroku
+django_heroku.settings(locals())
