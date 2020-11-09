@@ -11,7 +11,7 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 class NomineeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Nominee
-        fields = ['url', 'id', 'name']
+        fields = ['url', 'id', 'name', 'picture']
 
 
 class IndicationSerializer(serializers.HyperlinkedModelSerializer):
@@ -29,7 +29,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.UserProfile
         fields = ['url', 'id', 'username', 'email', 'date_joined',
-                  'profile_picture', 'bets', 'score', 'password']
+                  'profile_picture', 'bets', 'score', 'password', 'profile_picture']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
