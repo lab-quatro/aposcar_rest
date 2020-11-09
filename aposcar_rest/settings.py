@@ -61,7 +61,7 @@ ROOT_URLCONF = 'aposcar_rest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'template')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -80,11 +80,22 @@ WSGI_APPLICATION = 'aposcar_rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+POSTGRES_DATABASE = {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': os.getenv('DATABASE_NAME'),
+    'USER': os.getenv('DATABASE_USER'),
+    'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+    'HOST': os.getenv('DATABASE_HOST'),
+    'PORT': os.getenv('DATABASE_PORT')
+}
+
+SQL_LITE_DATABASE = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+}
+
+DATABASES = {
+    'default': SQL_LITE_DATABASE if DEBUG else POSTGRES_DATABASE
 }
 
 # Password validation
