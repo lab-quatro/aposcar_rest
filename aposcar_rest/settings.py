@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+import django_heroku
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -80,22 +81,22 @@ WSGI_APPLICATION = 'aposcar_rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-POSTGRES_DATABASE = {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': os.getenv('DATABASE_NAME'),
-    'USER': os.getenv('DATABASE_USER'),
-    'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-    'HOST': os.getenv('DATABASE_HOST'),
-    'PORT': os.getenv('DATABASE_PORT')
-}
+# POSTGRES_DATABASE = {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': os.getenv('DATABASE_NAME'),
+#     'USER': os.getenv('DATABASE_USER'),
+#     'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+#     'HOST': os.getenv('DATABASE_HOST'),
+#     'PORT': os.getenv('DATABASE_PORT')
+# }
 
 SQL_LITE_DATABASE = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': BASE_DIR / 'db.sqlite3',
 }
 
 DATABASES = {
-    'default': SQL_LITE_DATABASE if DEBUG else POSTGRES_DATABASE
+    'default': SQL_LITE_DATABASE
 }
 
 # Password validation
@@ -151,3 +152,11 @@ DEFAULT_FROM_EMAIL = 'no-replay@labqu4tro.com'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+# Azure Storage Settings
+AZURE_CONNECTION_STRING = str(os.getenv('AZURE_CONNECTION_STRING'))
+AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
+
+# Activate Django-Heroku
+django_heroku.settings(locals())
