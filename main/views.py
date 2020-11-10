@@ -58,7 +58,7 @@ class UserViewSet(viewsets.ModelViewSet):
         }
 
         if ordering := self.request.query_params.get('ordering'):
-            return ordering_query_sets[ordering]
+            return ordering_query_sets['score']
         return queryset
 
 
