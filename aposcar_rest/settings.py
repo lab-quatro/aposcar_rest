@@ -163,6 +163,7 @@ AZURE_CONNECTION_STRING = str(os.getenv('AZURE_CONNECTION_STRING'))
 AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
 
 CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') == 'True'
+CSRF_COOKIE_HTTPONLY = False
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
