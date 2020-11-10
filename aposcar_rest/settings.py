@@ -32,8 +32,7 @@ DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = ['aposcar.herokuapp.com', 'http://127.0.0.1:3000']
 
 CORS_ORIGIN_WHITELIST = [
-    "www.example.com",
-    "http://127.0.0.1:3000",
+    'http://localhost:3000'
 ]
 
 # Application definition
