@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['aposcar.herokuapp.com']
 
@@ -162,7 +162,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 AZURE_CONNECTION_STRING = str(os.getenv('AZURE_CONNECTION_STRING'))
 AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = os.getenv('DEBUG')
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
