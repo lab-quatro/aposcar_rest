@@ -14,7 +14,6 @@ from pathlib import Path
 
 import django_heroku
 from dotenv import load_dotenv
-from storages.backends.azure_storage import AzureStorage
 
 load_dotenv()
 
@@ -30,7 +29,12 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['aposcar.herokuapp.com', 'http://127.0.0.1:3000']
+
+CORS_ORIGIN_WHITELIST = [
+    "www.example.com",
+    "http://127.0.0.1:3000",
+]
 
 # Application definition
 
@@ -159,7 +163,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
-AzureStorage
 # Azure Storage Settings
 AZURE_CONNECTION_STRING = str(os.getenv('AZURE_CONNECTION_STRING'))
 AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
