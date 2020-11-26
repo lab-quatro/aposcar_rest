@@ -29,14 +29,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.UserProfile
         fields = ['url', 'id', 'username', 'email', 'date_joined',
-                  'profile_picture', 'bets', 'score', 'password', 'profile_picture']
-        extra_kwargs = {'password': {'write_only': True}}
+                  'profile_picture', 'bets', 'score', 'password']
+        extra_kwargs = {'password': {'write_only': True}, 'date_joined': {'read_only': True}}
 
     def create(self, validated_data):
         user = super().create(validated_data)
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password')
+        instance.set_password(password)
+        return super().update(instance, validated_data)
 
     def get_score(self, obj):
         return obj.bets.filter(is_winner=True).count()

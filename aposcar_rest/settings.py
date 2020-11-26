@@ -27,9 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aposcar.herokuapp.com', 'localhost:3000']
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
 
 # Application definition
 
@@ -44,7 +49,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_yasg',
-    'django_rest_passwordreset'
+    'django_rest_passwordreset',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -55,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware'
 ]
 
 ROOT_URLCONF = 'aposcar_rest.urls'
@@ -136,11 +144,6 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
 AUTH_USER_MODEL = 'main.UserProfile'
 
 REST_FRAMEWORK = {
@@ -163,6 +166,9 @@ DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 # Azure Storage Settings
 AZURE_CONNECTION_STRING = str(os.getenv('AZURE_CONNECTION_STRING'))
 AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
+
+CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') == 'True'
+CSRF_COOKIE_HTTPONLY = False
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
