@@ -61,6 +61,11 @@ class UserViewSet(viewsets.ModelViewSet):
             return ordering_query_sets['score']
         return queryset
 
+    @action(detail=False, methods=['GET'], permission_classes=[permissions.IsAuthenticated])
+    def current_user(self, request, pk=None):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
+
 
 class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
