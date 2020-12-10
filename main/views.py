@@ -5,6 +5,8 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
 from main.permissions import \
     IsOwnerOrInRoom, IsProfileOwnerOrReadOnlyOrStaff, IsStaffOrReadOnly
@@ -14,6 +16,7 @@ from rest_framework.response import Response
 
 from main import models
 from main import serializers
+from main.serializers import UserSerializer
 
 
 class CustomPasswordResetView:
@@ -118,3 +121,17 @@ class RoomViewSet(viewsets.ModelViewSet):
         room.share_code = None
         room.save()
         return Response({'share_code': room.share_code})
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user': UserSerializer(instance=user, context={'request': request}).data
+        })

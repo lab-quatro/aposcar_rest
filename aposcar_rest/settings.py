@@ -47,10 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
     'rest_framework',
-    'django_filters',
     'drf_yasg',
     'django_rest_passwordreset',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -146,10 +146,6 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'main.UserProfile'
 
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
-}
-
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -169,6 +165,12 @@ AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
 
 CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') == 'True'
 CSRF_COOKIE_HTTPONLY = False
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
