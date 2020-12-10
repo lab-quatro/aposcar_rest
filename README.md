@@ -25,6 +25,11 @@ python -m pip install -r requirements.txt
 python manage.py migrate
 ```
 
+5 - Execute the initial data migrations
+```
+python manage.py loaddata initial_data/Categories.json
+```
+
 5 - Create a user to work with
 ```
 python manage.py createsuperuser
