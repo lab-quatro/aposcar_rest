@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'django_rest_passwordreset',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -164,6 +165,12 @@ AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
 
 CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') == 'True'
 CSRF_COOKIE_HTTPONLY = False
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
