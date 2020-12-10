@@ -64,6 +64,11 @@ class UserViewSet(viewsets.ModelViewSet):
             return ordering_query_sets['score']
         return queryset
 
+    @action(detail=False, methods=['GET'], permission_classes=[permissions.IsAuthenticated])
+    def current_user(self, request, pk=None):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
+
 
 class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
@@ -121,17 +126,3 @@ class RoomViewSet(viewsets.ModelViewSet):
         room.share_code = None
         room.save()
         return Response({'share_code': room.share_code})
-
-
-class CustomAuthToken(ObtainAuthToken):
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user': UserSerializer(instance=user, context={'request': request}).data
-        })
