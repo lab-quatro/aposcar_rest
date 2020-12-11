@@ -29,6 +29,8 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
+ADMINS = [('Wilson Cazarré', 'wcs0486@gmail.com')]
+
 ALLOWED_HOSTS = ['aposcar.herokuapp.com', 'localhost:3000']
 
 CORS_ORIGIN_ALLOW_ALL = True
