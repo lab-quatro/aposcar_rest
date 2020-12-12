@@ -3,13 +3,9 @@ from main import models
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    indications = serializers.SlugRelatedField(
-        slug_field='name', queryset=models.Indication.objects.all()
-    )
-
     class Meta:
         model = models.Category
-        fields = ['url', 'id', 'name', 'indications']
+        fields = ['url', 'id', 'name']
 
 
 class NomineeSerializer(serializers.HyperlinkedModelSerializer):
