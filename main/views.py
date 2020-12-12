@@ -1,13 +1,12 @@
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Count
 from django.dispatch import receiver
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
 from main.permissions import \
     IsOwnerOrInRoom, IsProfileOwnerOrReadOnlyOrStaff, IsStaffOrReadOnly
@@ -17,7 +16,6 @@ from rest_framework.response import Response
 
 from main import models
 from main import serializers
-from main.serializers import UserSerializer
 
 
 class CustomPasswordResetView:
@@ -74,9 +72,24 @@ class UserViewSet(viewsets.ModelViewSet):
 class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
     serializer_class = serializers.IndicationSerializer
-    permission_classes = [IsStaffOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category']
+
+    def list(self, request, format=None, **kwargs):
+        queryset = models.Indication.objects.all()
+        serializer = serializers.IndicationReadOnlySerializer(
+            queryset, many=True, context={'request': request}
+        )
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, format=None, **kwargs):
+        queryset = models.Indication.objects.all()
+        indication = get_object_or_404(queryset, pk=pk)
+        serializer = serializers.IndicationReadOnlySerializer(
+            indication, context={'request': request}
+        )
+        return Response(serializer.data)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
