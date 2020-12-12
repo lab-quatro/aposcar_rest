@@ -73,18 +73,22 @@ class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
     serializer_class = serializers.IndicationSerializer
     permission_classes = [permissions.AllowAny]
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category']
+
+    def get_queryset(self):
+        queryset = models.Indication.objects.all()
+        if category := self.request.query_params.get('category', None):
+            queryset = queryset.filter(category=category)
+        return queryset
 
     def list(self, request, format=None, **kwargs):
-        queryset = models.Indication.objects.all()
+        queryset = self.get_queryset()
         serializer = serializers.IndicationReadOnlySerializer(
             queryset, many=True, context={'request': request}
         )
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, format=None, **kwargs):
-        queryset = models.Indication.objects.all()
+        queryset = self.get_queryset()
         indication = get_object_or_404(queryset, pk=pk)
         serializer = serializers.IndicationReadOnlySerializer(
             indication, context={'request': request}
