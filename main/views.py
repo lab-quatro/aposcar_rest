@@ -3,6 +3,7 @@ from django.db.models import Count
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django_filters.rest_framework import DjangoFilterBackend
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
@@ -74,6 +75,8 @@ class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
     serializer_class = serializers.IndicationSerializer
     permission_classes = [IsStaffOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category']
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
