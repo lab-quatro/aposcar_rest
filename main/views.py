@@ -72,7 +72,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class IndicationViewSet(viewsets.ModelViewSet):
     queryset = models.Indication.objects.all()
     serializer_class = serializers.IndicationSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsStaffOrReadOnly]
 
     def get_queryset(self):
         queryset = models.Indication.objects.all()
