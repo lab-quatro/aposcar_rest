@@ -33,6 +33,10 @@ ADMINS = [('Wilson Cazarré', 'wcs0486@gmail.com')]
 
 ALLOWED_HOSTS = ['aposcar.herokuapp.com', 'localhost:3000']
 
+# Redirect all HTTP request do HTTPS
+# See https://docs.djangoproject.com/en/3.1/ref/settings/#secure-ssl-redirect
+SECURE_SSL_REDIRECT = True
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'

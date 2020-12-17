@@ -54,7 +54,8 @@ class UserProfile(AbstractUser):
     email = models.EmailField(
         blank=False,
         unique=True,
-        error_messages={'unique': 'A user with that email already exists'})
+        error_messages={'unique': 'A user with that email already exists'}
+    )
 
     def __str__(self):
         return self.username
