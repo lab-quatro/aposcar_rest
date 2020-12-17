@@ -51,7 +51,10 @@ class UserProfile(AbstractUser):
         blank=True,
         help_text="A list of Indication IDs. You can't place two bets to the same category."
     )
-    email = models.EmailField(blank=False, unique=True)
+    email = models.EmailField(
+        blank=False,
+        unique=True,
+        error_messages={'unique': 'A user with that email already exists'})
 
     def __str__(self):
         return self.username
