@@ -70,7 +70,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class IndicationViewSet(viewsets.ModelViewSet):
-    queryset = models.Indication.objects.all(year=settings.AWARD_CURRENT_YEAR)
+    queryset = models.Indication.objects.filter(
+        year=settings.AWARD_CURRENT_YEAR
+    )
     serializer_class = serializers.IndicationSerializer
     permission_classes = [IsStaffOrReadOnly]
 
