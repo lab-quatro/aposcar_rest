@@ -35,7 +35,7 @@ class Indication(models.Model):
     nominated = models.ForeignKey(Nominee, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     year = models.IntegerField()
-    annotation = models.CharField(max_length=60)
+    annotation = models.TextField()
     is_winner = models.BooleanField(default=False)
 
     def __str__(self):
