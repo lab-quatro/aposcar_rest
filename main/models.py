@@ -13,6 +13,7 @@ class Nominee(models.Model):
     name = models.TextField()
     picture_url = models.ImageField(upload_to='nominees/')
     description = models.TextField()
+    annotation = models.CharField(max_length=60)
 
     class Meta:
         verbose_name_plural = 'nominees'
