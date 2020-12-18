@@ -11,8 +11,7 @@ from rest_framework.authtoken.models import Token
 
 class Nominee(models.Model):
     name = models.TextField()
-    picture_thumbnail = models.ImageField(upload_to='nominees/')
-    picture_cover = models.ImageField(upload_to='nominees/')
+    picture_url = models.ImageField(upload_to='nominees/')
     description = models.TextField()
 
     class Meta:
