@@ -12,6 +12,7 @@ from rest_framework.authtoken.models import Token
 class Nominee(models.Model):
     name = models.TextField()
     picture = models.ImageField(upload_to='nominees/')
+    description = models.TextField(blank=True)
 
     class Meta:
         verbose_name_plural = 'nominees'
