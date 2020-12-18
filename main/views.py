@@ -4,7 +4,6 @@ from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django_filters.rest_framework import DjangoFilterBackend
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
 from rest_framework.decorators import action
