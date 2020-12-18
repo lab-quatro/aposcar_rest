@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from main.permissions import \
     IsOwnerOrInRoom, IsProfileOwnerOrReadOnlyOrStaff, IsStaffOrReadOnly
+from django.conf import settings
 
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -102,7 +103,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class NomineeViewSet(viewsets.ModelViewSet):
-    queryset = models.Nominee.objects.all()
+    queryset = models.Nominee.objects.filter(year=settings.AWARD_CURRENT_YEAR)
     serializer_class = serializers.NomineeSerializer
     permission_classes = [IsStaffOrReadOnly]
 

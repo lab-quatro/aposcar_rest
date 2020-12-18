@@ -182,5 +182,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+AWARD_CURRENT_YEAR = 2020
+
 # Activate Django-Heroku
 django_heroku.settings(locals())
