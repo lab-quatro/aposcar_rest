@@ -13,7 +13,6 @@ class Nominee(models.Model):
     name = models.TextField()
     picture_url = models.ImageField(upload_to='nominees/')
     description = models.TextField()
-    annotation = models.CharField(max_length=60)
 
     class Meta:
         verbose_name_plural = 'nominees'
@@ -36,6 +35,7 @@ class Indication(models.Model):
     nominated = models.ForeignKey(Nominee, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     year = models.IntegerField()
+    annotation = models.CharField(max_length=60)
     is_winner = models.BooleanField(default=False)
 
     def __str__(self):

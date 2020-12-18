@@ -11,13 +11,14 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 class NomineeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Nominee
-        fields = ['url', 'id', 'name', 'picture']
+        fields = ['url', 'id', 'name', 'picture_url', 'description']
 
 
 class IndicationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Indication
-        fields = ['url', 'id', 'category', 'nominated', 'year', 'is_winner']
+        fields = ['url', 'id', 'category', 'nominated',
+                  'year', 'is_winner', 'annotation']
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
