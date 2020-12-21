@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/lab-quatro/aposcar_rest.svg?style=svg)](https://app.circleci.com/pipelines/github/lab-quatro/aposcar_rest)
 ![Dependabot](https://badgen.net/dependabot/badge-gen/lab-quatro/aposcar_rest?icon=dependabot)
+<br />
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I32TNLJ)
 
 ## How to contribute
 
