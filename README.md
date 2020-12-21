@@ -1,6 +1,7 @@
 # Aposcar API Rest
 
-![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)
+[![CircleCI](https://circleci.com/gh/lab-quatro/aposcar_rest.svg?style=svg)](https://app.circleci.com/pipelines/github/lab-quatro/aposcar_rest)
+![Dependabot](https://badgen.net/dependabot/badge-gen/lab-quatro/aposcar_rest?icon=dependabot)
 
 ## How to contribute
 
