@@ -66,6 +66,7 @@ class UserTest(TestCase):
             )
 
     def test_token_creation(self):
+        # Checks if the signal for Token creation is being triggered
         for user in self.users:
             try:
                 Token.objects.get(user__username=user['username'])
@@ -83,6 +84,18 @@ class UserTest(TestCase):
                 '/users/current_user/',
                 HTTP_AUTHORIZATION=f'Token {token}'
             )
+
             self.assertEqual(response.status_code, 200, response.status_text)
             self.assertEqual(user_model.username, user['username'])
             self.assertEqual(user_model.email, user['email'])
+
+    def test_check_staff_value(self):
+        # Checks if the is_staff attribute is set to False by default.
+        for user in self.users:
+            user_model = models.UserProfile.objects.get(
+                username=user['username']
+            )
+            self.assertEqual(
+                user_model.is_staff,
+                user.get('is_staff', False)
+            )
