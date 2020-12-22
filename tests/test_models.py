@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
 from rest_framework.test import APITestCase
+from django.core.files import File
 
 from main import models
 from rest_framework.authtoken.models import Token
@@ -47,7 +48,7 @@ class UserTest(TestCase):
             user_model = models.UserProfile.objects.get(
                 username=user['username']
             )
-            self.assertEqual(user_model.username, user['username'])
+            self.assertEqual(str(user_model), user['username'])
 
     def test_create_user_with_existing_email(self):
         with self.assertRaises(IntegrityError):
@@ -99,3 +100,58 @@ class UserTest(TestCase):
                 user_model.is_staff,
                 user.get('is_staff', False)
             )
+
+
+class NomineeTest(APITestCase):
+    def setUp(self) -> None:
+        with open('./media/nominees/megamind.jpg', 'rb') as img:
+            models.Nominee.objects.create(
+                name='Megamind',
+                picture_url=File(img),
+                description='''
+                A supervillain named Megamind defeats and kills his enemy. 
+                Out of boredom he creates a superhero who becomes evil, 
+                forcing Megamind to turn into a hero.
+                '''
+            )
+
+    def test_nominee_creation(self):
+        nominee = models.Nominee.objects.get(name='Megamind')
+        self.assertEqual(str(nominee), 'Megamind')
+
+
+class IndicationTest(APITestCase):
+    def setUp(self) -> None:
+        self.data = {
+            'nominated_name': 'Megamind',
+            'picture_path': './media/nominees/megamind.jpg',
+            'category_name': 'Best Picture',
+            'description': 'Foo',
+            'annotation': 'Director: Todd Philips'
+        }
+        category = models.Category.objects.create(
+            name=self.data['category_name']
+        )
+        with open(self.data['picture_path'], 'rb') as img:
+            nominee = models.Nominee.objects.create(
+                name=self.data['nominated_name'],
+                picture_url=File(img),
+                description=self.data['description']
+            )
+
+        models.Indication.objects.create(
+            nominated=nominee,
+            category=category,
+            year=2020,
+            annotation=self.data['annotation']
+        )
+
+    def test_indication_creation(self):
+        nominee = models.Nominee.objects.get(name=self.data['nominated_name'])
+        indication = models.Indication.objects.get(
+            nominated=nominee
+        )
+        self.assertEqual(
+            str(indication),
+            f'"{self.data["nominated_name"]}" on "{self.data["category_name"]}"'
+        )
