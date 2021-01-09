@@ -3,7 +3,7 @@ from django.test import TestCase
 from rest_framework.test import APITestCase
 from django.core.files import File
 
-from core import models
+from apps.core import models
 from rest_framework.authtoken.models import Token
 
 

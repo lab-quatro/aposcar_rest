@@ -7,15 +7,14 @@ from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from core.permissions import \
+from apps.core import \
     IsOwnerOrInRoom, IsProfileOwnerOrReadOnlyOrStaff, IsStaffOrReadOnly
 from django.conf import settings
 
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from core import models
-from core import serializers
+from apps.core import models, serializers
 
 
 class CustomPasswordResetView:
@@ -32,7 +31,8 @@ class CustomPasswordResetView:
         }
 
         email_html_message = render_to_string('email/user_reset_password.html', context)
-        email_plaintext_message = render_to_string('email/user_reset_password.txt', context)
+        email_plaintext_message = render_to_string(
+            'email/user_reset_password.txt', context)
 
         msg = EmailMultiAlternatives(
             subject="Password Reset for Aposcar",

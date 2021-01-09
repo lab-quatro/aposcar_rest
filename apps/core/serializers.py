@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core import models
+from apps.core import models
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
