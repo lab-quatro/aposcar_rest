@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main', '0002_auto_20201107_0144'),
+        ('core', '0002_auto_20201107_0144'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='userprofile',
             name='bets',
-            field=models.ManyToManyField(blank=True, help_text="A list of Indication IDs. You can't place two bets to the same category.", to='main.Indication'),
+            field=models.ManyToManyField(blank=True, help_text="A list of Indication IDs. You can't place two bets to the same category.", to='core.Indication'),
         ),
         migrations.AlterField(
             model_name='userprofile',

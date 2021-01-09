@@ -79,14 +79,14 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('year', models.IntegerField()),
                 ('is_winner', models.BooleanField(default=False)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.category')),
-                ('nominated', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.nominee')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.category')),
+                ('nominated', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.nominee')),
             ],
         ),
         migrations.AddField(
             model_name='userprofile',
             name='bets',
-            field=models.ManyToManyField(to='main.Indication'),
+            field=models.ManyToManyField(to='core.Indication'),
         ),
         migrations.AddField(
             model_name='userprofile',

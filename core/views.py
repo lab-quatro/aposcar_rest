@@ -7,15 +7,15 @@ from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from main.permissions import \
+from core.permissions import \
     IsOwnerOrInRoom, IsProfileOwnerOrReadOnlyOrStaff, IsStaffOrReadOnly
 from django.conf import settings
 
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from main import models
-from main import serializers
+from core import models
+from core import serializers
 
 
 class CustomPasswordResetView:
