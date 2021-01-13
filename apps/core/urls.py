@@ -1,7 +1,10 @@
 from django.conf.urls import url
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from main import views
+
+import apps.awards.views
+import apps.users.views
+from apps.core import views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -18,11 +21,11 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register(r'users', views.UserViewSet, basename='userprofile')
-router.register(r'indications', views.IndicationViewSet)
-router.register(r'categories', views.CategoryViewSet)
-router.register(r'nominees', views.NomineeViewSet)
-router.register(r'rooms', views.RoomViewSet)
+router.register(r'users', apps.users.views.UserViewSet, basename='userprofile')
+router.register(r'indications', apps.awards.views.IndicationViewSet)
+router.register(r'categories', apps.awards.views.CategoryViewSet)
+router.register(r'nominees', apps.awards.views.NomineeViewSet)
+router.register(r'rooms', apps.users.views.RoomViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

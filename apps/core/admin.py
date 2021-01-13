@@ -1,5 +1,6 @@
 from django.contrib import admin
-from main.models import Room, Nominee, Indication, Category, UserProfile
+from apps.users.models import Room, UserProfile
+from apps.awards.models import Nominee, Indication, Category
 
 # Register your models here.
 

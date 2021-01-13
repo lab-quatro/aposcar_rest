@@ -8,38 +8,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-
-class Nominee(models.Model):
-    name = models.TextField()
-    picture_url = models.ImageField(upload_to='nominees/')
-    description = models.TextField()
-
-    class Meta:
-        verbose_name_plural = 'nominees'
-
-    def __str__(self):
-        return self.name
+from apps.awards.models import Indication
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=40)
-
-    class Meta:
-        verbose_name_plural = 'categories'
-
-    def __str__(self):
-        return self.name
-
-
-class Indication(models.Model):
-    nominated = models.ForeignKey(Nominee, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    year = models.IntegerField()
-    annotation = models.TextField()
-    is_winner = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'"{self.nominated.name}" on "{self.category.name}"'
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    # Creating a Token object upon an User creation
+    if created:
+        Token.objects.create(user=instance)
 
 
 class UserProfile(AbstractUser):
@@ -82,10 +58,3 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    # Creating a Token object upon an User creation
-    if created:
-        Token.objects.create(user=instance)

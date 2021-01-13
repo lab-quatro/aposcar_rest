@@ -26,11 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = True
 
 ADMINS = [('Wilson Cazarré', 'wcs0486@gmail.com')]
 
-ALLOWED_HOSTS = ['aposcar.herokuapp.com', 'localhost:3000']
+ALLOWED_HOSTS = ['aposcar.herokuapp.com', '.localhost', '127.0.0.1']
 
 # Redirect all HTTP request do HTTPS
 # See https://docs.djangoproject.com/en/3.1/ref/settings/#secure-ssl-redirect
@@ -50,13 +50,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
     'rest_framework',
     'drf_yasg',
     'django_rest_passwordreset',
     'corsheaders',
     'rest_framework.authtoken',
-    'django_filters'
+    'django_filters',
+    'apps.core',
+    'apps.awards',
+    'apps.users'
 ]
 
 MIDDLEWARE = [
@@ -150,7 +152,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'main.UserProfile'
+AUTH_USER_MODEL = 'users.UserProfile'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
