@@ -30,7 +30,7 @@ DEBUG = True
 
 ADMINS = [('Wilson Cazarré', 'wcs0486@gmail.com')]
 
-ALLOWED_HOSTS = ['aposcar.herokuapp.com', '.localhost']
+ALLOWED_HOSTS = ['aposcar.herokuapp.com', '.localhost', '127.0.0.1']
 
 # Redirect all HTTP request do HTTPS
 # See https://docs.djangoproject.com/en/3.1/ref/settings/#secure-ssl-redirect
