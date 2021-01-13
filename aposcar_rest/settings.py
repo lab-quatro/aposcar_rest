@@ -152,7 +152,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'core.UserProfile'
+AUTH_USER_MODEL = 'users.UserProfile'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
