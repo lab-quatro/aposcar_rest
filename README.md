@@ -37,9 +37,7 @@ python manage.py migrate
 
 5 - Execute the initial data migrations
 ```
-python manage.py loaddata initial_data/Categories.json
-python manage.py loaddata initial_data/Nominees.json
-python manage.py loaddata initial_data/Indications.json
+python manage.py loaddata initial_data/*
 ```
 
 5 - Create a user to work with
