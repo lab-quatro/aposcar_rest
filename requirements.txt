@@ -30,7 +30,7 @@ inflection==0.5.1
 itypes==1.2.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-packaging==20.8
+packaging==20.9
 Pillow==8.1.0
 psycopg2==2.8.6
 pycparser==2.20
