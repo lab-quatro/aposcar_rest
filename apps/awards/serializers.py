@@ -6,7 +6,7 @@ from apps.awards import models
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Category
-        fields = ['url', 'id', 'name', 'url_field']
+        fields = ['url', 'id', 'name', 'url_field', 'indications']
         extra_kwargs = {
             'url': {'lookup_field': 'url_field'}
         }

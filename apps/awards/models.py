@@ -26,7 +26,8 @@ class Category(models.Model):
 
 class Indication(models.Model):
     nominated = models.ForeignKey(Nominee, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+                                 related_name='indications')
     year = models.IntegerField()
     annotation = models.TextField()
     is_winner = models.BooleanField(default=False)
