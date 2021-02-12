@@ -15,6 +15,7 @@ class Nominee(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=40)
+    url_field = models.CharField(max_length=40)
 
     class Meta:
         verbose_name_plural = 'categories'

@@ -39,6 +39,7 @@ class IndicationViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    lookup_field = 'url_field'
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     permission_classes = [IsStaffOrReadOnly]
