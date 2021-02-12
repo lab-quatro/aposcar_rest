@@ -30,16 +30,13 @@ DEBUG = os.getenv('DEBUG') == 'True'
 
 ADMINS = [('Wilson Cazarré', 'wcs0486@gmail.com')]
 
-ALLOWED_HOSTS = ['aposcar.herokuapp.com', '.localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Redirect all HTTP request do HTTPS
 # See https://docs.djangoproject.com/en/3.1/ref/settings/#secure-ssl-redirect
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT') == 'True'
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -62,6 +59,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -69,8 +67,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware'
 ]
 
 ROOT_URLCONF = 'aposcar_rest.urls'
